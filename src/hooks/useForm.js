@@ -29,7 +29,17 @@ export const useForm = (initialState, validateForm) => {
       [name]: value,
     });
   };
+
+  const handleFocus = (e) => {
+    let parent = e.target.parentNode.parentNode;
+    parent.classList.add('focus');
+  };
+
   const handleBlur = (e) => {
+    let parent = e.target.parentNode.parentNode;
+    if (e.target.value === '') {
+      parent.classList.remove('focus');
+    }
     handleChange(e);
     seterrorForm(validateForm(form));
   };
@@ -40,11 +50,11 @@ export const useForm = (initialState, validateForm) => {
     if (Object.keys(errorForm).length === 0) {
       setloading(true);
       dataFetch(urlForm, dataform);
-      setloading(false);
       setResponse(true);
       setTimeout(() => {
+        setloading(false);
         setResponse(false);
-      }, 2000);
+      }, 1000);
     } else {
       return;
     }
@@ -58,5 +68,6 @@ export const useForm = (initialState, validateForm) => {
     handleBlur,
     handleChange,
     handleSubmit,
+    handleFocus,
   };
 };
